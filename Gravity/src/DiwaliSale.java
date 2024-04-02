@@ -62,45 +62,50 @@ public class DiwaliSale {
              System.out.println("Payable Items: " + payableItems);
         }
         else if(option == 3) {
-        	
-        	PriorityQueue
-//        	int pointer1 = 0;
-//        	int pointer2 = 1;
-//        	 List<Integer> discountedItems = new ArrayList<>();
-//        	 List<Integer> payableItems = new ArrayList<>();
-//             List<Integer> prices = new ArrayList<>();
-//             for (int price : priceList) {
-//                 prices.add(price);
-//             }
-//             Collections.sort(prices, Collections.reverseOrder());
-//             while(pointer1 < prices.size()) {
-//            	 if(prices.get(pointer1) == -1) {
-//            		 pointer1++;
-//            		 continue;
-//            	 }
-//            	 payableItems.add(prices.get(pointer1));
-//            	 
-//            	 if(prices.get(pointer1+1) == prices.get(pointer2+1)) {
-//            		 while(pointer2 < prices.size()-1 && (prices.get(pointer1) == prices.get(pointer2) || prices.get(pointer2) == -1)) {
-//                		 pointer2++;
-//                	 }
-//                	 pointer1 = pointer1+1;
-//                	 discountedItems.add(prices.get(pointer2));
-//                	 prices.set(pointer2, -1);
-//                	 pointer2 = pointer1;
-//            	 }
-//            	 else {
-//	            	 pointer1++;
-//	            	 pointer2 = pointer1+1;
-//	            	 payableItems.add(prices.get(pointer1));
-//	            	 discountedItems.add(prices.get(pointer2++));
-//	            	 prices.set(pointer2, -1);
-//	            	 discountedItems.add(prices.get(pointer2++));
-//	            	 prices.set(pointer2, -1);
-//            	 }
-//            	 System.out.println("Discounted Items: " + discountedItems);
-//                 System.out.println("Payable Items: " + payableItems);
-             }
+        	List<Integer> discountedItems = new ArrayList<>();
+       	 List<Integer> payableItems = new ArrayList<>();
+        	PriorityQueue<Integer> pq = new PriorityQueue<Integer>(
+                    Collections.reverseOrder());
+        	  for (int price : priceList) {
+                  pq.add(price);
+              }
+        	  int first = -1;
+        	  int second = -1;
+        	  while(!pq.isEmpty()) {
+        		  if(first == -1) {
+        			  first = pq.poll();
+        		  }
+        		  else if(second == -1) {
+        			  second = pq.poll();
+        			  if(second == pq.peek()) {
+        				  if(first == second) {
+        					  payableItems.add(first);
+        					  payableItems.add(second);
+        					  first = -1;
+        					  second = -1;
+        				  }
+        				  else {
+        					  payableItems.add(first);
+        					  discountedItems.add(second);
+        					  first = -1;
+        					  second = -1;
+        				  }
+        				  
+        			  }
+        			  else {
+        				  payableItems.add(first);
+    					  payableItems.add(second);
+    					  discountedItems.add(pq.poll());
+    					  discountedItems.add(pq.poll());
+    					  first = -1;
+    					  second = -1;
+        			  }
+        		  }
+        		  
+        		  
+        	  }
+        	  System.out.println("Discounted Items: " + discountedItems);
+              System.out.println("Payable Items: " + payableItems);
             	 
         }
         myObj.close();
